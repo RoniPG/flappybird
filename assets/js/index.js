@@ -5,4 +5,13 @@ window.addEventListener('load', () => {
     game.start();
 
   // iteration - 2: add key listeners to the game
+
+  document.addEventListener('keydown', () => {
+    game.onKeyEvent(event);
+  });
+  
+  document.addEventListener('keyup', () => {
+    game.onKeyEvent(event);
+  });
+
 });

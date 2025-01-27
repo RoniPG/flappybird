@@ -13,6 +13,11 @@ class Game {
     this.background = new Background(this.ctx);
 
     // iteration 2: setup the flappy
+    this.flappyBird = new FlappyBird(
+      this.ctx,
+      70,
+      this.canvas.height / 2,
+    );
 
     this.pipes = [];
     this.drawPipesCount = 0;
@@ -24,6 +29,7 @@ class Game {
 
   onKeyEvent(event) {
     // iteration 2: link flappy key events
+    this.flappyBird.onKeyEvent(event)
   }
 
   start() {
@@ -60,6 +66,7 @@ class Game {
     // Iteration 1: move the background
     this.background.move();
     // Iteration 2: move the flappy
+    this.flappyBird.move();
     // Iteration 3: move the pipes
   }
 
@@ -88,6 +95,7 @@ class Game {
     // Iteration 1: draw the background
     this.background.draw();
     // Iteration 2: draw the flappy
+    this.flappyBird.draw();
     // Iteration 2: draw the pipes
     // Bonus: draw the score
 
