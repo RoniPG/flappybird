@@ -40,6 +40,7 @@ class Game {
         this.draw();
         this.move();
         this.addPipes();
+        this.checkCollisions();
       }, this.fps);
     }
   }
@@ -61,6 +62,7 @@ class Game {
   clear() {
     // Iteration 1: clean the screen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.pipes = this.pipes.filter(pipe => pipe.x + pipe.width >= 0);
   }
 
   move() {
@@ -106,6 +108,11 @@ class Game {
 
   checkCollisions() {
     // Iteration 4: check pipes collisions among flappy and end game if any pipe collides with the bird
+    const pipeCollides = this.pipes.some(pipe => this.flappyBird.collides(pipe));
+
+    if (pipeCollides || this.flappyBird.y + this.flappyBird.height >= this.canvas.height - this.background.footerImg.height) {
+      this.stop();
+    }
   }
 
   checkScore() {
@@ -118,7 +125,7 @@ class Game {
     // Iteration 2: draw the flappy
     this.flappyBird.draw();
     // Iteration 3: draw the pipes
-    this.pipes.forEach(pipe => pipe.draw())
+    this.pipes.forEach(pipe => pipe.draw());
     // Bonus: draw the score
 
     this.drawPipesCount++;
