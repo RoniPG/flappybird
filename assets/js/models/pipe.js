@@ -16,6 +16,7 @@ class Pipe {
       this.img.isReady = true;
       this.width = this.img.width;
     }
+    this.isChecked = false;
   }
 
   draw() {

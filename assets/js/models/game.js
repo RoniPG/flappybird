@@ -24,6 +24,10 @@ class Game {
     this.pipesFrequency = 100;
 
     // bonus: setup the score
+
+    this.score = 0;
+    this.bestScore = Number(localStorage.getItem('best-score') || 0);
+    this.onGameEnd = onGameEnd;
   }
 
 
@@ -41,6 +45,7 @@ class Game {
         this.move();
         this.addPipes();
         this.checkCollisions();
+        this.checkScore();
       }, this.fps);
     }
   }
@@ -53,10 +58,21 @@ class Game {
 
   restart() {
     // Bonus: restart on demand
+    this.score = 0;
+    this.pipes = [];
+    this.flappyBird.x = 70;
+    this.flappyBird.y = this.canvas.height / 2;
+    this.start();
   }
 
   end() {
     // Iteration 4: stop the game and setup score
+    this.stop();
+    if (this.score > this.bestScore) {
+      this.bestScore = this.score;
+      localStorage.setItem('best-score', this.bestScore)
+    }
+    this.onGameEnd();
   }
 
   clear() {
@@ -111,12 +127,21 @@ class Game {
     const pipeCollides = this.pipes.some(pipe => this.flappyBird.collides(pipe));
 
     if (pipeCollides || this.flappyBird.y + this.flappyBird.height >= this.canvas.height - this.background.footerImg.height) {
-      this.stop();
+      this.end();
     }
   }
 
   checkScore() {
     // Bonus
+    const pipe = this.pipes
+      .filter(pipe => pipe.mode === 'top')
+      .filter(pipe => !pipe.isChecked)
+      .find(pipe => pipe.x + pipe.width < this.flappyBird.x);
+
+      if (pipe) {
+        pipe.isChecked = true;
+        this.score++;
+      }
   }
 
   draw() {
@@ -127,7 +152,18 @@ class Game {
     // Iteration 3: draw the pipes
     this.pipes.forEach(pipe => pipe.draw());
     // Bonus: draw the score
-
+    this.ctx.save();
+    this.ctx.font = "30px FlappyFont";
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.fillText(this.score, 10, 40);
+    this.ctx.font = "20px FlappyFont";
+    this.ctx.fillStyle = "#73BF2E";
+    this.ctx.fillText (
+      `best: ${this.bestScore}`, 
+      10, 
+      this.canvas.height -10
+    )
+    this.ctx.restore();
     this.drawPipesCount++;
   }
 }

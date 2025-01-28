@@ -1,6 +1,8 @@
 window.addEventListener('load', () => {
   // iteration - 1: create & start the game
-    const game = new Game('canvas-game');
+    const game = new Game('canvas-game', () => {
+      game.restart();
+    });
 
     game.start();
 
