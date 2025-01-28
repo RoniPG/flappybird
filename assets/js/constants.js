@@ -1,1 +1,2 @@
-const KEY_UP = 32;
+const ARROW_UP = 38;
+const SPACE = 32;

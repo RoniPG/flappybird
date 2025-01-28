@@ -1,17 +1,29 @@
 window.addEventListener('load', () => {
-  // iteration - 1: create & start the game
-    const game = new Game('canvas-game', () => {
-      game.restart();
-    });
+  const startBtn = document.getElementById('restart-btn')
 
-    game.start();
+  // iteration - 1: create & start the game
+  const game = new Game('canvas-game', () => {
+    startBtn.classList.toggle('hidden');
+  });
+
+  game.start();
 
   // iteration - 2: add key listeners to the game
 
+  startBtn.addEventListener('click', () => {
+    game.restart();
+    startBtn.classList.toggle('hidden');
+  })
+
   document.addEventListener('keydown', () => {
-    game.onKeyEvent(event);
+    if (game.drawIntervalId) {
+      game.onKeyEvent(event)
+    } else {
+      startBtn.classList.toggle('hidden');
+      game.restart()
+    }
   });
-  
+
   document.addEventListener('keyup', () => {
     game.onKeyEvent(event);
   });

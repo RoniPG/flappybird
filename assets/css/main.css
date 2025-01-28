@@ -27,3 +27,12 @@ body * {
   flex-direction: column;
   height: 100%;
 }
+
+#restart-btn {
+  width: 100%;
+  max-width: 150px;
+  position: absolute;
+}
+.hidden {
+  display: none;
+}

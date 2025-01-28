@@ -29,7 +29,8 @@ class FlappyBird {
   onKeyEvent(event) {
     const isJumping = event.type === 'keydown';
     switch (event.keyCode) {
-      case KEY_UP:
+      case ARROW_UP:
+      case SPACE:
         // iteration 2: jump! if necessary =D
       if (!isJumping) {
         this.y -= this.jumpImpulse;
