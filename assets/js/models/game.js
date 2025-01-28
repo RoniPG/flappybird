@@ -25,7 +25,7 @@ class Game {
 
     // bonus: setup the score
   }
-  
+
 
   onKeyEvent(event) {
     // iteration 2: link flappy key events
@@ -39,6 +39,7 @@ class Game {
         this.clear();
         this.draw();
         this.move();
+        this.addPipes();
       }, this.fps);
     }
   }
@@ -68,19 +69,39 @@ class Game {
     // Iteration 2: move the flappy
     this.flappyBird.move();
     // Iteration 3: move the pipes
+    this.pipes.forEach(pipe => pipe.move())
   }
 
   addPipes() {
     // Iteration 3: each draw pipes frequency cycles concat a pair of pipes to the pipes array and reset the draw cycle
+    if (this.flappyBird.sprite.isReady && (this.drawPipesCount % this.pipesFrequency === 0)) {
+      this.pipes = this.pipes.concat(this.randPairOfPipes());
+      this.drawPipesCount = 0;
+    }
   }
 
   randPairOfPipes() {
     const space = this.canvas.height - this.background.footerImg.height;
-    const gap = (this.flappybird.height * 2) + this.flappybird.jumpImpulse;
+    const gap = (this.flappyBird.height * 2) + this.flappyBird.jumpImpulse;
     const topSize = Math.floor(Math.random() * (space - gap) * 0.75)
     const bottomSize = space - topSize - gap;
     // Iteration 3: return two new pipes one at the top and other at the bottom
-    return []
+    return [
+      new Pipe(
+        this.ctx,
+        this.canvas.width,
+        0,
+        topSize,
+        'top'
+      ),
+      new Pipe(
+        this.ctx,
+        this.canvas.width,
+        this.canvas.height - this.background.footerImg.height - bottomSize,
+        bottomSize,
+        'bottom'
+      ),
+    ]
   }
 
   checkCollisions() {
@@ -96,7 +117,8 @@ class Game {
     this.background.draw();
     // Iteration 2: draw the flappy
     this.flappyBird.draw();
-    // Iteration 2: draw the pipes
+    // Iteration 3: draw the pipes
+    this.pipes.forEach(pipe => pipe.draw())
     // Bonus: draw the score
 
     this.drawPipesCount++;
